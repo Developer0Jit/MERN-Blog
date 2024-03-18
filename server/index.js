@@ -1,13 +1,21 @@
 import express from "express";
 import  mongoose  from "mongoose";
 import dotenv from "dotenv"
+import cors from "cors";
 import authRoute from "./routes/auth.route.js"
 
 
 const app = express();
 app.use(express.json())
 
+
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
+
+
 dotenv.config();
+
 
 mongoose
   .connect(process.env.MONGODB_URL)
@@ -18,7 +26,7 @@ mongoose
     console.log(err);
   });
   
-  app.use("/api/auth", authRoute)
+  app.use("/api/auth/", authRoute)
 
   app.use((err, req, res, next)=>{
     const statusCode = err.statusCode || 500
